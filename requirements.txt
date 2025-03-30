@@ -1,1 +1,10 @@
-fastapi[all]
+fastapi
+uvicorn
+pydantic
+requests
+google-generativeai
+apscheduler
+gspread
+google-auth
+google-auth-oauthlib
+google-api-python-client
