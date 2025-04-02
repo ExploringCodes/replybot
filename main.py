@@ -71,6 +71,9 @@ class AIReplyRequest(BaseModel):
 class AdditionalPromptConfig(BaseModel):
     additional_instructions: str
 
+class HeartbeatRequest(BaseModel):
+    timestamp: str
+
 def get_sheets_client(credentials_dict, temp_file=None):
     try:
         if temp_file is None:
@@ -192,6 +195,12 @@ async def set_additional_instructions(prompt_config: AdditionalPromptConfig):
 @app.get("/get-additional-instructions")
 async def get_additional_instructions():
     return {"additional_instructions": additional_instructions}
+
+# New endpoint for heartbeat
+@app.post("/heartbeat")
+async def heartbeat(request: HeartbeatRequest):
+    logger.info(f"Received heartbeat at {request.timestamp}")
+    return {"status": "success", "message": "Heartbeat received", "server_time": datetime.now().isoformat()}
 
 def generate_ai_reply(comment: str, post_message: Optional[str] = None, 
                      preset_reply: Optional[str] = None, commenter_name: Optional[str] = None, 
@@ -499,6 +508,10 @@ def stop_scheduler():
         current_job = None
         return {"status": "Scheduler stopped manually."}
     return {"status": "No active scheduler to stop."}
+
+
+
+
 
 
 
